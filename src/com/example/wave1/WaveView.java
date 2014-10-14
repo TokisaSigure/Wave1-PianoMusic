@@ -94,7 +94,9 @@ public class WaveView extends View{
 	    			fft[i * 2] = (byte)amplitude;
 	    			fft[i * 2 + 1] = (byte)amplitude;
 	    		}
-	    		/*Log.d("test1",fft[19]+" ");
+	    		
+	    		/*//周波数成分の取り出しに使用していた。このままだとあり得ない速度でLogCatが流れるので注意
+	    		Log.d("test1",fft[19]+" ");
 	    		Log.d("test2",fft[20]+" ");
 	    		Log.d("test3",fft[21]+" ");
 	    		Log.d("test4",fft[22]+" ");
@@ -126,10 +128,13 @@ public class WaveView extends View{
 	    					}
 	    				}
 	    			}
+	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
 	    			if(max==14 || max==15)
 					{
+	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
+	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
-	    				//e=true;
+	    				//e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
 	    				Log.d("scale","メジャースケール");
 	    				Scale = true;
 	    				Log.d("max",max+"");
@@ -146,15 +151,7 @@ public class WaveView extends View{
 	    		if(max>0)
 	    			Log.d("fft[max-1]",fft[max-1]+"");
 	  			Log.d("fft[max+1]",fft[max+1]+"");
-	    		*/
-	    		
-	    		//音の識別処理
-	    		/*if(fft[16]<fft[18])
-	    			Log.d("test","ラ");
-	    		else
-	    			Log.d("test","ソ");*/
-	    		
-	    		
+	    		*/  		
 	    		
 				updateFFT(fft);
 			}
