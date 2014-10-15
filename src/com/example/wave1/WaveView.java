@@ -115,34 +115,45 @@ public class WaveView extends View{
 	    		
 	    		//バブルソート,最大値とその場所を発見するためのソート
 	    		if(Scale==false){
-	    			for(int loop=2;loop<30;++loop)
+	    			for(int loop=2;loop<51;loop+=2)
 	    			{
-	    				for(int loop2=30;loop2>loop;--loop2)
+	    				for(int loop2=50;loop2>loop;loop2-=2)
 	    				{
-	    					if(_clonefft[loop2]<_clonefft[loop2-1] && (_clonefft[loop2]!=0 && _clonefft[loop2-1]!=0))
+	    					if(_clonefft[loop2]<_clonefft[loop2-2] /*&& (_clonefft[loop2]!=0 && _clonefft[loop2-2]!=0)*/)
 	    					{
-	    						byte tmp = _clonefft[loop2];
-	    						_clonefft[loop2]=_clonefft[loop2-1];
-	    						_clonefft[loop2-1]=tmp;
-	    						max=loop2-1;
+	    						/*byte tmp = _clonefft[loop2];
+	    						_clonefft[loop2]=_clonefft[loop2-2];
+	    						_clonefft[loop2-2]=tmp;*/
+	    						max=loop2-2;
 	    					}
 	    				}
 	    			}
 	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
-	    			if(max==14 || max==15)
-					{
+	    			/*if(max==14)
+					{*/
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
 	    				//e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
-	    				Log.d("scale","メジャースケール");
-	    				Scale = true;
+	    				//Log.d("scale","メジャースケール");
+	    				//Scale = true;
 	    				Log.d("max",max+"");
 	    				Log.d("fft[max]",fft[max]+"");
+	    				Log.d("_clonefft",_clonefft[max]+"");
+	    				Log.d("_clonefft+2",_clonefft[max+2]+"");
+	    				Log.d("_clonefft+4",_clonefft[max+4]+"");
+	    				Log.d("_clonefft+6",_clonefft[max+6]+"");
 	    				if(max>0)
 	    					Log.d("fft[max-1]",fft[max-1]+"");
 	    				Log.d("fft[max+1]",fft[max+1]+"");
-					}
+	    				
+	    				for (int i=0;i<fft.length;i+=2)
+	    				{
+	    					Log.d(i+"",fft[i]+"");
+	    					if(fft[i]!=0)//音座標把握用if文、上げる前に消して
+	    						Scale=true;
+	    				}
+					//}
 	    		}
 	    		
 	    		/*
