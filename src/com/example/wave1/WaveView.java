@@ -22,7 +22,7 @@ public class WaveView extends View{
 	byte[] fft;
 	boolean isupdate;
 	boolean Scale = false;//スケールが検出できているか、いないかの判定
-	byte[] _clonefft; //fftのクローン、並び替え用配列
+	byte[] _clonefft; //fftのクローン、並び替え用配列(必要ない可能性が浮上、検証中)
 	int max=0; //最大値座標格納用変数
 	boolean a=false,b=false,c=false,d=false,e=false,f=false,g=false;//各音階判定用変数
 
@@ -115,29 +115,34 @@ public class WaveView extends View{
 	    		
 	    		//バブルソート,最大値とその場所を発見するためのソート
 	    		if(Scale==false){
+    				byte tmp=0;
 	    			for(int loop=2;loop<51;loop+=2)
 	    			{
-	    				for(int loop2=50;loop2>loop;loop2-=2)
-	    				{
-	    					if(_clonefft[loop2]<_clonefft[loop2-2] /*&& (_clonefft[loop2]!=0 && _clonefft[loop2-2]!=0)*/)
+	    				//for(int loop2=50;loop2>loop;loop2-=2)
+	    				//{
+	    					if(tmp<_clonefft[loop] /*&& (_clonefft[loop2]!=0 && _clonefft[loop2-2]!=0)*/)
 	    					{
 	    						/*byte tmp = _clonefft[loop2];
 	    						_clonefft[loop2]=_clonefft[loop2-2];
 	    						_clonefft[loop2-2]=tmp;*/
-	    						max=loop2-2;
+	    						tmp = _clonefft[loop];
+	    						max=loop;
 	    					}
-	    				}
+	    				//}
 	    			}
 	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
-	    			/*if(max==14)
-					{*/
+	    			/*maxが14「ミ」かつ「ミ」が127の強さを持っていた場合、また前後の周波数成分が50以下の場合、「ミ」と判断する*/
+	    			if(max==14 && fft[max]==127 && fft[max-2]<=50 && fft[max+2]<=50)
+					{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
-	    				//e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
-	    				//Log.d("scale","メジャースケール");
-	    				//Scale = true;
+	    				e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
+	    				Log.d("scale","Cメジャースケール");
+	    				Scale = true;
 	    				Log.d("max",max+"");
+	    				
+	    				/*テスト用処理、どの個所にどんな値が入っているかのチェック用に
 	    				Log.d("fft[max]",fft[max]+"");
 	    				Log.d("_clonefft",_clonefft[max]+"");
 	    				Log.d("_clonefft+2",_clonefft[max+2]+"");
@@ -146,14 +151,8 @@ public class WaveView extends View{
 	    				if(max>0)
 	    					Log.d("fft[max-1]",fft[max-1]+"");
 	    				Log.d("fft[max+1]",fft[max+1]+"");
-	    				
-	    				for (int i=0;i<fft.length;i+=2)
-	    				{
-	    					Log.d(i+"",fft[i]+"");
-	    					if(fft[i]!=0)//音座標把握用if文、上げる前に消して
-	    						Scale=true;
-	    				}
-					//}
+	    				*/
+					}
 	    		}
 	    		
 	    		/*
