@@ -143,9 +143,9 @@ public class WaveView extends View{
 	    				Log.d("音階","ソ");
 	    			if(max==20 && fft[max]==127 && fft[max+2]<=70)//ラの検出
 	    				Log.d("音階","ラ");
-	    			if(max==22 && fft[max]==127 && fft[max+2]<=70)//シの検出
+	    			if(max==22 && fft[max]==127 && fft[max-2]>=100 && fft[max+2]<=70)//シの検出
 	    				Log.d("音階","シ");
-	    			if(max==10 && fft[max]==127 /*&& fft[max+2]<=60*/)//シの検出
+	    			if(max==22 && fft[max]==127 /*&& fft[max+2]<=60*/)//シの検出
 	    			{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
