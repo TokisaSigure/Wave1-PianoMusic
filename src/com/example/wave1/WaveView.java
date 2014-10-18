@@ -132,37 +132,74 @@ public class WaveView extends View{
 	    			}
 	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
 	    			/*maxが14「ミ」かつ「ミ」が127の強さを持っていた場合、また前後の周波数成分が50以下の場合、「ミ」と判断する*/
+	    			//忘れたときの為に、ミの判定方法
+	    			if(max==12 && fft[max]==127 && fft[max+2]<=60)
+	    			{
+	    				//レの検出
+	    				Log.d("音階","レ");d=true;
+	    			}
 	    			if(max==14 && fft[max]==127 && fft[max-2]<=50 && fft[max+2]<=50)
-					{
+	    			{
+	    				//ミの検出
+	    				Log.d("音階","ミ");e=true;
+	    			}
+	    			if(max==16 && fft[max]==127 && fft[max+2]<=90)//ファの検出
+	    			{
+	    				Log.d("音階","ファ");f=true;
+	    			}
+	    			if(max==18 && fft[max]==127 && fft[max+2]<=80)//ソの検出
+	    			{
+	    				Log.d("音階","ソ");g=true;
+	    			}
+	    			if(max==20 && fft[max]==127 && fft[max+2]<=70)//ラの検出
+	    			{
+	    				Log.d("音階","ラ");a=true;
+	    			}
+	    			if(max==22 && fft[max]==127 && fft[max-2]>=100 && fft[max+2]<=70)//シの検出
+	    			{
+	    				Log.d("音階","シ");b=true;
+	    			}
+	    			if(max==22 && fft[max]==127 && fft[max-2]<100)//ドの検出
+	    			{
+	    				Log.d("音階","ド");c=true;
+	    			}
+	    			
+	    			if(Scale!=true){
+	    			
+	    				if(d==true && e==true && f==true)
+	    				{
+	    					Log.d("スケール","Cメジャースケール");
+	    					Scale=true;
+	    				}
+	    				if(d==true && f==true && e!=true)
+	    				{
+	    					Log.d("スケール","Cマイナースケール");
+	    					Scale=true;
+	    				}
+	    			}
+	    			
+	    			//if(max==22 && fft[max]==127 && fft[max+2]<=60)//ドの検出
+	    			//{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
-	    				e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
+	    				/*e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
 	    				Log.d("scale","Cメジャースケール");
 	    				Scale = true;
 	    				Log.d("max",max+"");
 	    				
-	    				/*テスト用処理、どの個所にどんな値が入っているかのチェック用に
+	    				//テスト用処理、どの個所にどんな値が入っているかのチェック用に
 	    				Log.d("fft[max]",fft[max]+"");
 	    				Log.d("_clonefft",_clonefft[max]+"");
+	    				Log.d("_clonefft-2",_clonefft[max-2]+"");
 	    				Log.d("_clonefft+2",_clonefft[max+2]+"");
 	    				Log.d("_clonefft+4",_clonefft[max+4]+"");
-	    				Log.d("_clonefft+6",_clonefft[max+6]+"");
 	    				if(max>0)
 	    					Log.d("fft[max-1]",fft[max-1]+"");
 	    				Log.d("fft[max+1]",fft[max+1]+"");
-	    				*/
-					}
+	    				
+					}*/
 	    		}
-	    		
-	    		/*
-	    		Log.d("max",max+"");
-	    		Log.d("fft[max]",fft[max]+"");
-	    		if(max>0)
-	    			Log.d("fft[max-1]",fft[max-1]+"");
-	  			Log.d("fft[max+1]",fft[max+1]+"");
-	    		*/  		
-	    		
 				updateFFT(fft);
 			}
 		},
