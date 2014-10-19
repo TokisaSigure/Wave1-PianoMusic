@@ -28,7 +28,7 @@ public class WaveView extends View{
 
 	public WaveView(Context context, MediaPlayer player){
 		super(context);
-		
+
 		this.player = player;
     	visualizer = new Visualizer(player.getAudioSessionId());
     	visualizer.setEnabled(false);
@@ -56,10 +56,10 @@ public class WaveView extends View{
 							if(iszeroindex_old != -1){
 								int duration = i - iszeroindex_old;
 								if(duration_max < duration){
-									duration_max = duration;									
-								}								
+									duration_max = duration;
+								}
 							}
-							iszeroindex_old = i;								
+							iszeroindex_old = i;
 						}
 					}
 					if(duration_max != 0){
@@ -70,14 +70,14 @@ public class WaveView extends View{
 							bpm /= 2;
 						}else if(bpm < 50){
 							bpm *= 2;
-						}						
+						}
 					}else{
 						bpm = 0;
 					}
-					updateWavelet(wavelet);					
+					updateWavelet(wavelet);
 				}
 			}
-			
+
 			@Override
 			public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
 				// fft[0]:			直流成分の値（――、すなわち0Hz）
@@ -94,7 +94,7 @@ public class WaveView extends View{
 	    			fft[i * 2] = (byte)amplitude;
 	    			fft[i * 2 + 1] = (byte)amplitude;
 	    		}
-	    		
+
 	    		/*//周波数成分の取り出しに使用していた。このままだとあり得ない速度でLogCatが流れるので注意
 	    		Log.d("test1",fft[19]+" ");
 	    		Log.d("test2",fft[20]+" ");
@@ -104,7 +104,7 @@ public class WaveView extends View{
 	    		Log.d("test6",fft[24]+" ");
 	    		Log.d("test7",fft[25]+" ");
 	    		Log.d("test8",fft[26]+" ");*/
-	    		
+
 	    		//ソートするためのfftデータのコピー
 	    		if(Scale==false){
 	    			for(int loop=0;loop<fft.length-1;++loop)
@@ -112,9 +112,10 @@ public class WaveView extends View{
 	    				_clonefft[loop]=fft[loop];
 	    			}
 	    		}
-	    		
+
 	    		//バブルソート,最大値とその場所を発見するためのソート
 	    		if(Scale==false){
+	    			byte max_value;
     				byte tmp=0;
 	    			for(int loop=2;loop<51;loop+=2)
 	    			{
@@ -127,12 +128,17 @@ public class WaveView extends View{
 	    						_clonefft[loop2-2]=tmp;*/
 	    						tmp = _clonefft[loop];
 	    						max=loop;
+	    						max_value = tmp;
 	    					}
 	    				//}
 	    			}
 	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
 	    			/*maxが14「ミ」かつ「ミ」が127の強さを持っていた場合、また前後の周波数成分が50以下の場合、「ミ」と判断する*/
 	    			//忘れたときの為に、ミの判定方法
+	    			while(max > 23){	// 倍音補正かけてみたり（雑
+	    				max /= 2;
+	    			}
+	    							// fft[max] > max_value * 0.5 で最大値50%みたいにしてみたり
 	    			if(max==12 && fft[max]==127 && fft[max+2]<=60)
 	    			{
 	    				//レの検出
@@ -163,9 +169,10 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("音階","ド");c=true;
 	    			}
-	    			
+	    			// Log.d("", (c ? "C" : "-") + (d ? "D" : "-") + (e ? "E" : "-") + (f ? "F" : "-") + (g ? "G" : "-") + (a ? "A" : "-") + (b ? "B" : "-") + );
+
 	    			if(Scale!=true){
-	    			
+
 	    				if(d==true && e==true && f==true)
 	    				{
 	    					Log.d("スケール","Cメジャースケール");
@@ -177,7 +184,7 @@ public class WaveView extends View{
 	    					Scale=true;
 	    				}
 	    			}
-	    			
+
 	    			//if(max==22 && fft[max]==127 && fft[max+2]<=60)//ドの検出
 	    			//{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
@@ -187,7 +194,7 @@ public class WaveView extends View{
 	    				Log.d("scale","Cメジャースケール");
 	    				Scale = true;
 	    				Log.d("max",max+"");
-	    				
+
 	    				//テスト用処理、どの個所にどんな値が入っているかのチェック用に
 	    				Log.d("fft[max]",fft[max]+"");
 	    				Log.d("_clonefft",_clonefft[max]+"");
@@ -197,7 +204,7 @@ public class WaveView extends View{
 	    				if(max>0)
 	    					Log.d("fft[max-1]",fft[max-1]+"");
 	    				Log.d("fft[max+1]",fft[max+1]+"");
-	    				
+
 					}*/
 	    		}
 				updateFFT(fft);
@@ -206,7 +213,7 @@ public class WaveView extends View{
 		Visualizer.getMaxCaptureRate(),
 		true, true);	// waveform, fft
     	visualizer.setEnabled(true);
-    	
+
     	waveform = null;
     	waveform1000ms = null;
     	waveform1000ms_index = -1;
@@ -216,7 +223,7 @@ public class WaveView extends View{
     	isupdate = true;
     }
 
-    // ウェーブレット変換    
+    // ウェーブレット変換
     private byte[] invoke(byte[] input){
     	// Haar Wevelet
 //		byte[] output = new byte[input.length / 2];
@@ -264,10 +271,10 @@ public class WaveView extends View{
 		drawArray(canvas, "waveform", waveform, 1, (int)(getHeight() * 0.25));
 		drawArray(canvas, "wavelet", wavelet, 1, (int)(getHeight() * 0.50));
 		if(waveform1000ms_index != -1 && waveform1000ms != null){
-			canvas.drawText(waveform1000ms_index + " / " + waveform1000ms.length, 0, (int)(getHeight() * 0.50) - 54, paint);			
+			canvas.drawText(waveform1000ms_index + " / " + waveform1000ms.length, 0, (int)(getHeight() * 0.50) - 54, paint);
 		}
 		if(bpm != -1){
-			canvas.drawText("BPM: " + bpm, 0, (int)(getHeight() * 0.50) + 54, paint);			
+			canvas.drawText("BPM: " + bpm, 0, (int)(getHeight() * 0.50) + 54, paint);
 		}
 		drawArray(canvas, "FFT", fft, 2, (int)(getHeight() * 0.75));
 //		for (int i = 0; i < fft.length; i++) {
@@ -276,9 +283,9 @@ public class WaveView extends View{
 //	        int capturerate = visualizer.getCaptureSize();
 //	        if(i % (samplingrate / capturerate / 2) == 0){
 //	        	g.drawLine(x1, zero_y, x2, zero_y + 5, paint);
-//	        }	
+//	        }
 //		}
-    
+
     	// 連続して描画する
 		invalidate();
         try {
@@ -286,7 +293,7 @@ public class WaveView extends View{
         } catch (InterruptedException e) {
         }
     }
-    
+
     private void drawArray(Canvas canvas, String label, byte[] array, int division, int zero_y){
     	Paint paint = new Paint();
     	String length_label = "";
@@ -297,14 +304,14 @@ public class WaveView extends View{
             	int y1 = zero_y;
             	int x2 = x1;
             	int y2 = zero_y - array[i * division];
-    	        canvas.drawLine(x1, y1, x2, y2, paint);				
+    	        canvas.drawLine(x1, y1, x2, y2, paint);
             }
             length_label = "" + array.length / division;
         }
         canvas.drawText(label + " " + length_label, 0, zero_y - 64, paint);
-        canvas.drawLine(0, zero_y, width, zero_y, paint);    	        	
+        canvas.drawLine(0, zero_y, width, zero_y, paint);
     }
-    
+
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_UP){
         	isupdate = !isupdate;
@@ -328,19 +335,19 @@ public class WaveView extends View{
         	}
     	}
     }
-    
+
     public void updateWavelet(byte[] wavelet){
     	if(isupdate){
-        	this.wavelet = wavelet;    		
+        	this.wavelet = wavelet;
     	}
     }
-    
+
     public void updateFFT(byte[] fft){
     	if(isupdate){
-        	this.fft = fft;    		
+        	this.fft = fft;
     	}
     }
-    
+
 }
 
 
