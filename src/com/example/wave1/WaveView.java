@@ -134,19 +134,24 @@ public class WaveView extends View{
 	    			}
 	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
 	    			/*maxが14「ミ」かつ「ミ」が127の強さを持っていた場合、また前後の周波数成分が50以下の場合、「ミ」と判断する*/
-	    			//忘れたときの為に、ミの判定方法
 	    			while(max > 23){	// 倍音補正かけてみたり（雑
 	    				max /= 2;
 	    			}
 	    							// fft[max] > max_value * 0.5 で最大値50%みたいにしてみたり
-	    			if(max==12 && fft[max]==127 && fft[max+2]<=60)
+	    			if(max==12 && fft[max]==127 && fft[max-2]<90 && fft[max+2] >= 30 && fft[max+2] <50)//ドの検出
 	    			{
-	    				//レの検出
+	    				Log.d("音階","ド");c=true;
+	    			}
+	    			if(max==12 && fft[max]==127 && fft[max+2]<=90  && fft[max+2]<30)//ド#の検出
+	    			{
+	    				Log.d("音階","ド#");
+	    			}
+	    			if(max==12 && fft[max]==127 && fft[max+2]<=60)//レの検出
+	    			{
 	    				Log.d("音階","レ");d=true;
 	    			}
-	    			if(max==14 && fft[max]==127 && fft[max-2]<=50 && fft[max+2]<=50)
+	    			if(max==14 && fft[max]==127 && fft[max-2]<=50 && fft[max+2]<=50)//ミの検出
 	    			{
-	    				//ミの検出
 	    				Log.d("音階","ミ");e=true;
 	    			}
 	    			if(max==16 && fft[max]==127 && fft[max+2]<=90)//ファの検出
@@ -161,6 +166,7 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("音階","ラ");a=true;
 	    			}
+	    			
 	    			if(max==22 && fft[max]==127 && fft[max-2]>=100 && fft[max+2]<=70)//シの検出
 	    			{
 	    				Log.d("音階","シ");b=true;
