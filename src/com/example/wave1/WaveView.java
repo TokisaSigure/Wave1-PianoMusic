@@ -138,7 +138,7 @@ public class WaveView extends View{
 	    			while(max > 23){	// 倍音補正かけてみたり（雑
 	    				max /= 2;
 	    			}
-	    			// 書き込みテストです
+	    			// 書き込みテストです、テスト
 	    							// fft[max] > max_value * 0.5 で最大値50%みたいにしてみたり
 	    			if(max==12 && fft[max]==127 && fft[max+2]<=60)
 	    			{
