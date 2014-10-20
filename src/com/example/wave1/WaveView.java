@@ -166,7 +166,10 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("‰¹ŠK","ƒ‰");a=true;
 	    			}
-	    			
+	    			if(max==20 && fft[max]==127 && fft[max-2]<30)//ƒ‰#‚ÌŒŸo
+	    			{
+	    				Log.d("‰¹ŠK","ƒ‰#");
+	    			}
 	    			if(max==22 && fft[max]==127 && fft[max-2]>=100 && fft[max+2]<=70)//ƒV‚ÌŒŸo
 	    			{
 	    				Log.d("‰¹ŠK","ƒV");b=true;
