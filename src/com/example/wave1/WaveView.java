@@ -25,6 +25,7 @@ public class WaveView extends View{
 	byte[] _clonefft; //fftのクローン、並び替え用配列(必要ない可能性が浮上、検証中)
 	int max=0; //最大値座標格納用変数
 	boolean a=false,b=false,c=false,d=false,e=false,f=false,g=false;//各音階判定用変数
+	boolean majar=false,mainare=false; //メジャー、マイナーのフラグ、メジャーなら明るい、マイナーなら暗い曲として認定、各スケールに使用される特徴があるか調べてみる。
 
 	public WaveView(Context context, MediaPlayer player){
 		super(context);
@@ -134,11 +135,13 @@ public class WaveView extends View{
 	    			}
 	    			/*ミの判定、ミの周波数はこの番号に格納されているはず。*/
 	    			/*maxが14「ミ」かつ「ミ」が127の強さを持っていた場合、また前後の周波数成分が50以下の場合、「ミ」と判断する*/
-	    			while(max > 23){	// 倍音補正かけてみたり（雑
-	    				max /= 2;
+	    			while(max > 23){	// 倍音補正かけてみたり（雑 追記(赤木):三倍音などにも対応できるようにしてみました
+	    				max = max / (max/23+1) ;
 	    			}
 	    			// 書き込みテストです、テスト
 	    							// fft[max] > max_value * 0.5 で最大値50%みたいにしてみたり
+	    			//各音階判断if文,値は実際のデータを元に算出しているため、実際の値とは異なる可能性が大きい。
+	    			//取りあえずはダミーとしてこの値を使用しておく。
 	    			if(max==12 && fft[max]==127 && fft[max-2]<90 && fft[max+2] >= 30 && fft[max+2] <50)//ドの検出
 	    			{
 	    				Log.d("音階","ド");c=true;
@@ -155,13 +158,21 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("音階","ミ");e=true;
 	    			}
-	    			if(max==16 && fft[max]==127 && fft[max+2]<=90)//ファの検出
+	    			if(max==16 && fft[max]==127 && fft[max+2]<=90 && fft[max+2] >= 50)//ファの検出
 	    			{
 	    				Log.d("音階","ファ");f=true;
 	    			}
-	    			if(max==18 && fft[max]==127 && fft[max+2]<=80)//ソの検出
+	    			if(max==16 && fft[max]==127 && fft[max+2]<=30)//ファの検出
+	    			{
+	    				Log.d("音階","ファ#");f=true;
+	    			}
+	    			if(max==18 && fft[max]==127 && fft[max+2]<=80 && fft[max+2] >= 50)//ソの検出
 	    			{
 	    				Log.d("音階","ソ");g=true;
+	    			}
+	    			if(max==18 && fft[max]==127 && fft[max+2]<=40)//ソの検出
+	    			{
+	    				Log.d("音階","ソ#");g=true;
 	    			}
 	    			if(max==20 && fft[max]==127 && fft[max+2]<=70)//ラの検出
 	    			{
@@ -186,21 +197,23 @@ public class WaveView extends View{
 	    				if(d==true && e==true && f==true)
 	    				{
 	    					Log.d("スケール","Cメジャースケール");
+	    					majar = true;
 	    					Scale=true;
 	    				}
 	    				if(d==true && f==true && e!=true)
 	    				{
 	    					Log.d("スケール","Cマイナースケール");
+	    					mainare=true;
 	    					Scale=true;
 	    				}
 	    			}
 
-	    			//if(max==22 && fft[max]==127 && fft[max+2]<=60)//ドの検出
+	    			//if(max==16 && fft[max]==127 && fft[max+2]<=60)//ドの検出
 	    			//{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
-	    				/*e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
+	    			/*	e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
 	    				Log.d("scale","Cメジャースケール");
 	    				Scale = true;
 	    				Log.d("max",max+"");
