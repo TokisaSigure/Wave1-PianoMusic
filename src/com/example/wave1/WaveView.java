@@ -25,6 +25,7 @@ public class WaveView extends View{
 	byte[] _clonefft; //fftのクローン、並び替え用配列(必要ない可能性が浮上、検証中)
 	int max=0; //最大値座標格納用変数
 	boolean a=false,b=false,c=false,d=false,e=false,f=false,g=false;//各音階判定用変数
+	boolean as=false,cs=false,ds=false,fs=false,gs=false;//(追加分)音階がシャープの時用のフラグ、ド,レ,ファ,ソ,ラの5音のみシャープあり
 	boolean majar=false,mainare=false; //メジャー、マイナーのフラグ、メジャーなら明るい、マイナーなら暗い曲として認定、各スケールに使用される特徴があるか調べてみる。
 
 	public WaveView(Context context, MediaPlayer player){
@@ -141,18 +142,26 @@ public class WaveView extends View{
 	    			// 書き込みテストです、テスト
 	    							// fft[max] > max_value * 0.5 で最大値50%みたいにしてみたり
 	    			//各音階判断if文,値は実際のデータを元に算出しているため、実際の値とは異なる可能性が大きい。
-	    			//取りあえずはダミーとしてこの値を使用しておく。
-	    			if(max==12 && fft[max]==127 && fft[max-2]<90 && fft[max+2] >= 30 && fft[max+2] <50)//ドの検出
+	    			//取りあえずはダミーとしてこの値を使用しておく,11月中にfft[max]とその周囲の周波数の関係性から音を割り出す処理に切り替える。
+	    			//思いついたのでメモ：マックスを取り、次点で最も音が強いのはどの周波数なのかを検出し、判定することは出来ないか。
+	    			//11月10日までに関係性を調べる。
+	    			if(max==12  && fft[max-2]<90 && fft[max-2]>=50 && fft[max+2] >= 40 && fft[max+2] <50)//ドの検出
 	    			{
 	    				Log.d("音階","ド");c=true;
 	    			}
-	    			if(max==12 && fft[max]==127 && fft[max+2]<=90  && fft[max+2]<30)//ド#の検出
+	    			if(max==12 && fft[max]==127 && fft[max-2]<=40  && fft[max+2]<30 && cs==false)//ド#の検出
 	    			{
-	    				Log.d("音階","ド#");
+	    				Log.d("音階","ド#");cs=true;
 	    			}
-	    			if(max==12 && fft[max]==127 && fft[max+2]<=60)//レの検出
+	    			if(max==12 && fft[max]==127 && fft[max+2]<=60 && fft[max+2] >= 30)//レの検出
 	    			{
 	    				Log.d("音階","レ");d=true;
+	    				//Log.d("fft[max+2]",fft[max+2]+"");
+	    			}
+	    			if(max==12 && fft[max-2]<50 && fft[max+2]>=80 )//レ#の検出
+	    			{
+	    				Log.d("音階","レ#");ds=true;
+	    				Log.d("fft[max+6]",fft[max+2]+"");
 	    			}
 	    			if(max==14 && fft[max]==127 && fft[max-2]<=50 && fft[max+2]<=50)//ミの検出
 	    			{
@@ -164,7 +173,7 @@ public class WaveView extends View{
 	    			}
 	    			if(max==16 && fft[max]==127 && fft[max+2]<=30)//ファの検出
 	    			{
-	    				Log.d("音階","ファ#");f=true;
+	    				Log.d("音階","ファ#");fs=true;
 	    			}
 	    			if(max==18 && fft[max]==127 && fft[max+2]<=80 && fft[max+2] >= 50)//ソの検出
 	    			{
@@ -172,7 +181,7 @@ public class WaveView extends View{
 	    			}
 	    			if(max==18 && fft[max]==127 && fft[max+2]<=40)//ソの検出
 	    			{
-	    				Log.d("音階","ソ#");g=true;
+	    				Log.d("音階","ソ#");gs=true;
 	    			}
 	    			if(max==20 && fft[max]==127 && fft[max+2]<=70)//ラの検出
 	    			{
@@ -180,7 +189,7 @@ public class WaveView extends View{
 	    			}
 	    			if(max==20 && fft[max]==127 && fft[max-2]<30)//ラ#の検出
 	    			{
-	    				Log.d("音階","ラ#");
+	    				Log.d("音階","ラ#");as=true;
 	    			}
 	    			if(max==22 && fft[max]==127 && fft[max-2]>=100 && fft[max+2]<=70)//シの検出
 	    			{
@@ -192,9 +201,10 @@ public class WaveView extends View{
 	    			}
 	    			// Log.d("", (c ? "C" : "-") + (d ? "D" : "-") + (e ? "E" : "-") + (f ? "F" : "-") + (g ? "G" : "-") + (a ? "A" : "-") + (b ? "B" : "-") + );
 
+	    			//各種スケールの検出を行う、取得された音階を参考にスケールの判定を行う
 	    			if(Scale!=true){
 
-	    				if(d==true && e==true && f==true)
+	    				if(c==true && d==true && e==true)
 	    				{
 	    					Log.d("スケール","Cメジャースケール");
 	    					majar = true;
@@ -206,9 +216,23 @@ public class WaveView extends View{
 	    					mainare=true;
 	    					Scale=true;
 	    				}
+	    				//ここまでCスケール
+	    				//ここからDスケール
+	    				if(d==true && e==true && fs==true)
+	    				{
+	    					Log.d("スケール","Dメジャースケール");
+	    					majar = true;
+	    					Scale = true;
+	    				}
+	    				if(d==true && e==true && f==true)
+	    				{
+	    					Log.d("スケール","Dマイナースケール");
+	    					majar = true;
+	    					Scale = true;
+	    				}
 	    			}
 
-	    			//if(max==16 && fft[max]==127 && fft[max+2]<=60)//ドの検出
+	    			//if(max==12 /*&& fft[max]==127 && fft[max+2]<=60*/)//ドの検出
 	    			//{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
