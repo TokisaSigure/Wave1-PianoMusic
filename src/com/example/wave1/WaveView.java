@@ -145,11 +145,11 @@ public class WaveView extends View{
 	    			//取りあえずはダミーとしてこの値を使用しておく,11月中にfft[max]とその周囲の周波数の関係性から音を割り出す処理に切り替える。
 	    			//思いついたのでメモ：マックスを取り、次点で最も音が強いのはどの周波数なのかを検出し、判定することは出来ないか。
 	    			//11月10日までに関係性を調べる。
-	    			if(max==12  && fft[max-2]<90 && fft[max-2]>=50 && fft[max+2] >= 40 && fft[max+2] <50)//ドの検出
+	    			if(max==12  && ((double)fft[max-2]/(double)fft[max])>=0.9 && ((double)fft[max+2]/(double)fft[max])>=0.33 && fft[max+4]/(double)fft[max] >= 16)//ドの検出
 	    			{
 	    				Log.d("音階","ド");c=true;
 	    			}
-	    			if(max==12 && fft[max]==127 && fft[max-2]<=40  && fft[max+2]<30 && cs==false)//ド#の検出
+	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.9 && ((double)fft[max-2]/(double)fft[max])>=0.45 && ((double)fft[max+2]/(double)fft[max])>=0.04 && ((double)fft[max+4]/(double)fft[max])>0.15 && cs==false)//ド#の検出
 	    			{
 	    				Log.d("音階","ド#");cs=true;
 	    			}
@@ -171,7 +171,7 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("音階","ファ");f=true;
 	    			}
-	    			if(max==16 && fft[max]==127 && fft[max+2]<=30)//ファの検出
+	    			if(max==16 && fft[max]==127 && fft[max+2]<=25)//ファの検出
 	    			{
 	    				Log.d("音階","ファ#");fs=true;
 	    			}
@@ -230,14 +230,34 @@ public class WaveView extends View{
 	    					majar = true;
 	    					Scale = true;
 	    				}
+	    				//ここまでDスケール
+	    				//ここからEスケール
+	    				if(cs==true && e==true && fs==true)
+	    				{
+	    					Log.d("スケール","Eメジャースケール");
+	    					majar=true;
+	    					Scale = true;
+	    				}
+	    				if(cs==true && fs==true && c==true)
+	    				{
+	    					Log.d("スケール","Eマイナ―スケール");
+	    					mainare=true;
+	    					Scale=true;
+	    				}
+	    				//ここまでEスケール
+	    				//ここからFスケール
+	    				if(f==true && as==true && c==true)
+	    				{
+	    					Log.d("スケール","Fメジャースケール");
+	    				}
 	    			}
 
-	    			//if(max==12 /*&& fft[max]==127 && fft[max+2]<=60*/)//ドの検出
-	    			//{
+	    			if(max==22 /*&& fft[max]==127 && fft[max+2]<=60*/)//ドの検出
+	    			{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
-	    			/*	e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
+	    				e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
 	    				Log.d("scale","Cメジャースケール");
 	    				Scale = true;
 	    				Log.d("max",max+"");
@@ -245,14 +265,15 @@ public class WaveView extends View{
 	    				//テスト用処理、どの個所にどんな値が入っているかのチェック用に
 	    				Log.d("fft[max]",fft[max]+"");
 	    				Log.d("_clonefft",_clonefft[max]+"");
-	    				Log.d("_clonefft-2",_clonefft[max-2]+"");
-	    				Log.d("_clonefft+2",_clonefft[max+2]+"");
-	    				Log.d("_clonefft+4",_clonefft[max+4]+"");
+	    				Log.d("max-2/max",_clonefft[max-2]+"");
+	    				Log.d("max-2/max",((double)_clonefft[max-2]/(double)_clonefft[max])*100+"%");
+	    				Log.d("max+2/max",((double)_clonefft[max+2]/(double)_clonefft[max])*100+"%");
+	    				Log.d("max+4/max",((double)_clonefft[max+4]/(double)_clonefft[max])*100+"%");
 	    				if(max>0)
 	    					Log.d("fft[max-1]",fft[max-1]+"");
 	    				Log.d("fft[max+1]",fft[max+1]+"");
 
-					}*/
+					}
 	    		}
 				updateFFT(fft);
 			}
