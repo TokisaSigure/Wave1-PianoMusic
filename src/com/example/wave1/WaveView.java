@@ -170,27 +170,27 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("音階","ファ");f=true;
 	    			}
-	    			if(max==16 && ((double)fft[max+2]/(double)fft[max])<=0.5)//ファの検出
+	    			if(max==16 && ((double)fft[max-2]/(double)fft[max])<=0.5)//ファの検出
 	    			{
 	    				Log.d("音階","ファ#");fs=true;
 	    			}
-	    			if(max==18 && fft[max]==127 && fft[max+2]<=80 && fft[max+2] >= 50)//ソの検出
+	    			if(max==18 && ((double)fft[max-2]/(double)fft[max])<=0.50 && ((double)fft[max-2]/(double)fft[max]) >= 0.50)//ソの検出
 	    			{
 	    				Log.d("音階","ソ");g=true;
 	    			}
-	    			if(max==18 && fft[max]==127 && fft[max+2]<=40)//ソの検出
+	    			if(max==18 && ((double)fft[max+2]/(double)fft[max])<=0.5 && ((double)fft[max+2]/(double)fft[max])<0.5)//ソの検出
 	    			{
 	    				Log.d("音階","ソ#");gs=true;
 	    			}
-	    			if(max==20 && fft[max]==127 && fft[max+2]<=70)//ラの検出
+	    			if(max==20 && ((double)fft[max-2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<0.5)//ラの検出
 	    			{
 	    				Log.d("音階","ラ");a=true;
 	    			}
-	    			if(max==20 && fft[max]==127 && fft[max-2]<30)//ラ#の検出
+	    			if(max==20 && ((double)fft[max-2]/(double)fft[max])<0.5)//ラ#の検出
 	    			{
 	    				Log.d("音階","ラ#");as=true;
 	    			}
-	    			if(max==22 && fft[max]==127 && fft[max-2]>=100 && fft[max+2]<=70)//シの検出
+	    			if(max==22 && ((double)fft[max-2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.5)//シの検出
 	    			{
 	    				Log.d("音階","シ");b=true;
 	    			}
@@ -251,12 +251,12 @@ public class WaveView extends View{
 	    				}
 	    			}
 
-	    			if(max==12 && fft[max]==127 /*&& fft[max+2]<=60*/)//ドの検出
-	    			{
+	    			//if(max==12 && fft[max]==127 /*&& fft[max+2]<=60*/)//ドの検出
+	    			//{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
 	    				//Toast.makeText(this, "メジャースケール", 10000).show();
-	    				e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
+	    			/*	e=true;//ミの周波数がピークだった場合、ミのフラグをオンにする
 	    				Log.d("scale","Cメジャースケール");
 	    				Scale = true;
 	    				Log.d("max",max+"");
@@ -272,7 +272,7 @@ public class WaveView extends View{
 	    					Log.d("fft[max-1]",fft[max-1]+"");
 	    				Log.d("fft[max+1]",fft[max+1]+"");
 
-					}
+					}*/
 	    		}
 				updateFFT(fft);
 			}
