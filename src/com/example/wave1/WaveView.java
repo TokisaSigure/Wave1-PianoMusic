@@ -149,29 +149,28 @@ public class WaveView extends View{
 	    			{
 	    				Log.d("音階","ド");c=true;
 	    			}
-	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.9 && ((double)fft[max-2]/(double)fft[max])>=0.45 && ((double)fft[max+2]/(double)fft[max])>=0.04 && ((double)fft[max+4]/(double)fft[max])>0.15 && cs==false)//ド#の検出
+	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])<=0.3 && ((double)fft[max+4]/(double)fft[max])<0.2 && cs==false)//ド#の検出
 	    			{
 	    				Log.d("音階","ド#");cs=true;
 	    			}
-	    			if(max==12 && fft[max]==127 && fft[max+2]<=60 && fft[max+2] >= 30)//レの検出
+	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.75 && ((double)fft[max+4]/(double)fft[max])>=0.2)//レの検出
 	    			{
 	    				Log.d("音階","レ");d=true;
-	    				//Log.d("fft[max+2]",fft[max+2]+"");
 	    			}
-	    			if(max==12 && fft[max-2]<50 && fft[max+2]>=80 )//レ#の検出
+	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])>0.39 && ((double)fft[max+2]/(double)fft[max])>=0.9 && ((double)fft[max+4]/(double)fft[max])>0.35 )//レ#の検出
 	    			{
 	    				Log.d("音階","レ#");ds=true;
 	    				Log.d("fft[max+6]",fft[max+2]+"");
 	    			}
-	    			if(max==14 && fft[max]==127 && fft[max-2]<=50 && fft[max+2]<=50)//ミの検出
+	    			if(max==14 && ((double)fft[max-2]/(double)fft[max])<=0.15)//ミの検出
 	    			{
 	    				Log.d("音階","ミ");e=true;
 	    			}
-	    			if(max==16 && fft[max]==127 && fft[max+2]<=90 && fft[max+2] >= 50)//ファの検出
+	    			if(max==16 && ((double)fft[max-2]/(double)fft[max])>=0.7 && ((double)fft[max+2]/(double)fft[max]) >= 0.40)//ファの検出
 	    			{
 	    				Log.d("音階","ファ");f=true;
 	    			}
-	    			if(max==16 && fft[max]==127 && fft[max+2]<=25)//ファの検出
+	    			if(max==16 && ((double)fft[max+2]/(double)fft[max])<=0.5)//ファの検出
 	    			{
 	    				Log.d("音階","ファ#");fs=true;
 	    			}
@@ -252,7 +251,7 @@ public class WaveView extends View{
 	    				}
 	    			}
 
-	    			if(max==22 /*&& fft[max]==127 && fft[max+2]<=60*/)//ドの検出
+	    			if(max==12 && fft[max]==127 /*&& fft[max+2]<=60*/)//ドの検出
 	    			{
 	    				/*便宜的なスケール判定,「ミ」の音はCメジャーのみである為、「ミ」が取得された場合「Cメジャー」となる
 	    				 * ただし、現状では精度に難あり*/
