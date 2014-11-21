@@ -142,65 +142,64 @@ public class WaveView extends View{
 	    			}*/
 	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])<=0.3 && ((double)fft[max+4]/(double)fft[max])<0.2 && cs==false)//ド#の検出
 	    			{
-	    				Log.d("音階","ド#");cs=true;
+	    				Log.d("音階","ド#");cs=true;dmj++;emj++;fma++;amj++;bmj++;bma++;
 	    			}
-	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.75 && ((double)fft[max+4]/(double)fft[max])>=0.2)//レの検出
+	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.75 && ((double)fft[max+4]/(double)fft[max])>=0.2 && d==false)//レの検出
 	    			{
-	    				Log.d("音階","レ");d=true;
+	    				Log.d("音階","レ");d=true;cmj++;cma++;dmj++;ema++;fmj++;gmj++;gma++;bma++;
 	    			}
-	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])>0.39 && ((double)fft[max+2]/(double)fft[max])>=0.9 && ((double)fft[max+4]/(double)fft[max])>0.35 )//レ#の検出
+	    			if(max==12 && ((double)fft[max-2]/(double)fft[max])>0.39 && ((double)fft[max+2]/(double)fft[max])>=0.9 && ((double)fft[max+4]/(double)fft[max])>0.35 && ds==false )//レ#の検出
 	    			{
-	    				Log.d("音階","レ#");ds=true;
-	    				Log.d("fft[max+6]",fft[max+2]+"");
+	    				Log.d("音階","レ#");ds=true;cma++;emj++;fma++;gma++;bmj++;
 	    			}
-	    			if(max==14 && ((double)fft[max-2]/(double)fft[max])<=0.15)//ミの検出
+	    			if(max==14 && ((double)fft[max-2]/(double)fft[max])<=0.15 && e==false)//ミの検出
 	    			{
-	    				Log.d("音階","ミ");e=true;
+	    				Log.d("音階","ミ");e=true;cmj++;dmj++;dma++;emj++;ema++;fmj++;gmj++;amj++;bmj++;bma++;
 	    			}
-	    			if(max==16 && ((double)fft[max-2]/(double)fft[max])>=0.7 && ((double)fft[max+2]/(double)fft[max]) >= 0.40)//ファの検出
+	    			if(max==16 && ((double)fft[max-2]/(double)fft[max])>=0.7 && ((double)fft[max+2]/(double)fft[max]) >= 0.40 && f==false)//ファの検出
 	    			{
-	    				Log.d("音階","ファ");f=true;
+	    				Log.d("音階","ファ");f=true;cmj++;cma++;dma++;fmj++;fma++;gma++;
 	    			}
-	    			if(max==16 && ((double)fft[max-2]/(double)fft[max])<=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.5)//ファ#の検出
+	    			if(max==16 && ((double)fft[max-2]/(double)fft[max])<=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.5 && fs==false)//ファ#の検出
 	    			{
-	    				Log.d("音階","ファ#");fs=true;
+	    				Log.d("音階","ファ#");fs=true;dmj++;emj++;ema++;gmj++;amj++;bmj++;bma++;
 	    			}
-	    			if(max==18 && ((double)fft[max-2]/(double)fft[max])>=0.50 && ((double)fft[max+2]/(double)fft[max]) <= 0.50)//ソの検出
+	    			if(max==18 && ((double)fft[max-2]/(double)fft[max])>=0.50 && ((double)fft[max+2]/(double)fft[max]) <= 0.50 && g==false)//ソの検出
 	    			{
-	    				Log.d("音階","ソ");g=true;
+	    				Log.d("音階","ソ");g=true;cmj++;cma++;dmj++;dma++;ema++;fmj++;fma++;gmj++;gma++;bma++;
 	    			}
-	    			if(max==18 && ((double)fft[max+2]/(double)fft[max])<=0.30 && ((double)fft[max+2]/(double)fft[max])<0.5)//ソ#の検出
+	    			if(max==18 && ((double)fft[max+2]/(double)fft[max])<=0.30 && ((double)fft[max+2]/(double)fft[max])<0.5 && gs==false)//ソ#の検出
 	    			{
-	    				Log.d("音階","ソ#");gs=true;
+	    				Log.d("音階","ソ#");gs=true;cma++;emj++;fma++;amj++;bmj++;
 	    			}
-	    			if(max==20 && ((double)fft[max-2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<0.5)//ラの検出
+	    			if(max==20 && ((double)fft[max-2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<0.5 && a==false)//ラの検出
 	    			{
-	    				Log.d("音階","ラ");a=true;
+	    				Log.d("音階","ラ");a=true;cmj++;dmj++;dma++;emj++;ema++;fmj++;gmj++;gma++;amj++;bma++;
 	    			}
-	    			if(max==20 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])<0.5 )//ラ#の検出
+	    			if(max==20 && ((double)fft[max-2]/(double)fft[max])<0.5 && ((double)fft[max+2]/(double)fft[max])<0.5 && as==false )//ラ#の検出
 	    			{
-	    				Log.d("音階","ラ#");as=true;
+	    				Log.d("音階","ラ#");as=true;cma++;dma++;emj++;ema++;fmj++;gma++;bmj++;
 	    			}
-	    			if(max==22 && ((double)fft[max-2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.5)//シの検出
+	    			if(max==22 && ((double)fft[max-2]/(double)fft[max])>=0.5 && ((double)fft[max+2]/(double)fft[max])<=0.5 && b==false )//シの検出
 	    			{
-	    				Log.d("音階","シ");b=true;
+	    				Log.d("音階","シ");b=true;cmj++;dmj++;emj++;ema++;gmj++;amj++;bmj++;bma++;
 	    			}
-	    			if(max==22 && ((double)fft[max-2]/(double)fft[max])<=0.3 )//ドの検出
+	    			if(max==22 && ((double)fft[max-2]/(double)fft[max])<=0.3 && c==false )//ドの検出
 	    			{
-	    				Log.d("音階","ド");c=true;
+	    				Log.d("音階","ド");c=true;cmj++;cma++;dma++;ema++;fmj++;fma++;gmj++;gma++;dmj--;
 	    			}
 	    			// Log.d("", (c ? "C" : "-") + (d ? "D" : "-") + (e ? "E" : "-") + (f ? "F" : "-") + (g ? "G" : "-") + (a ? "A" : "-") + (b ? "B" : "-") + );
 
 	    			//各種スケールの検出を行う、取得された音階を参考にスケールの判定を行う
 	    			if(Scale!=true){
 
-	    				if(c==true && d==true && e==true)
+	    				if(cmj==6)
 	    				{
 	    					Log.d("スケール","Cメジャースケール");
 	    					majar = true;
 	    					Scale=true;
 	    				}
-	    				if(d==true && f==true && e!=true)
+	    				if(cma==6)
 	    				{
 	    					Log.d("スケール","Cマイナースケール");
 	    					mainare=true;
@@ -208,37 +207,78 @@ public class WaveView extends View{
 	    				}
 	    				//ここまでCスケール
 	    				//ここからDスケール
-	    				if(d==true && e==true && fs==true)
+	    				if(dmj==6)
 	    				{
 	    					Log.d("スケール","Dメジャースケール");
 	    					majar = true;
 	    					Scale = true;
 	    				}
-	    				if(d==true && e==true && f==true)
+	    				if(dma==6)
 	    				{
 	    					Log.d("スケール","Dマイナースケール");
-	    					majar = true;
+	    					mainare = true;
 	    					Scale = true;
 	    				}
 	    				//ここまでDスケール
 	    				//ここからEスケール
-	    				if(cs==true && e==true && fs==true)
+	    				if(emj==6)
 	    				{
-	    					Log.d("スケール","Eメジャースケール");
-	    					majar=true;
+	    					Log.d("スケール","Dメジャースケール");
+	    					majar = true;
 	    					Scale = true;
 	    				}
-	    				if(cs==true && fs==true && c==true)
+	    				if(ema==6)
 	    				{
-	    					Log.d("スケール","Eマイナ―スケール");
-	    					mainare=true;
-	    					Scale=true;
+	    					Log.d("スケール","Dマイナースケール");
+	    					mainare = true;
+	    					Scale = true;
 	    				}
 	    				//ここまでEスケール
 	    				//ここからFスケール
-	    				if(f==true && as==true && c==true)
+	    				if(fmj==6)
 	    				{
-	    					Log.d("スケール","Fメジャースケール");
+	    					Log.d("スケール","Dメジャースケール");
+	    					majar = true;
+	    					Scale = true;
+	    				}
+	    				if(fma==6)
+	    				{
+	    					Log.d("スケール","Dマイナースケール");
+	    					mainare = true;
+	    					Scale = true;
+	    				}
+	    				//ここからGスケール
+	    				if(gmj==6)
+	    				{
+	    					Log.d("スケール","Dメジャースケール");
+	    					majar = true;
+	    					Scale = true;
+	    				}
+	    				if(gma==6)
+	    				{
+	    					Log.d("スケール","Dマイナースケール");
+	    					mainare = true;
+	    					Scale = true;
+	    				}
+	    				//ここからaスケール
+	    				if(amj==6)
+	    				{
+	    					Log.d("スケール","Dメジャースケール");
+	    					majar = true;
+	    					Scale = true;
+	    				}
+	    				//ここからbスケール
+	    				if(bmj==6)
+	    				{
+	    					Log.d("スケール","Dメジャースケール");
+	    					majar = true;
+	    					Scale = true;
+	    				}
+	    				if(bma==6)
+	    				{
+	    					Log.d("スケール","Dマイナースケール");
+	    					mainare = true;
+	    					Scale = true;
 	    				}
 	    			}
 
